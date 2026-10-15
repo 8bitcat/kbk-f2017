@@ -1,5 +1,5 @@
 """Bygger index.html (fristående sida) från artefakt-källan på Skrivbordet.
-Kör:  python bygg.py   (från D:\GamesProjects\kbk-f2017)
+Kör:  python bygg.py   (från D:/GamesProjects/kbk-f2017)
 """
 import pathlib
 SRC = pathlib.Path(r"C:/Users/palss/Desktop/KBK F2017 stödmedlem/index.html")

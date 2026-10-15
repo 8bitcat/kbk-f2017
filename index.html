@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stödmedlem KBK F2017</title>
+<meta name="description" content="Bli stödmedlem i Kungsladugårds BK F2017. Välj belopp och vem du hejar på, så får du en färdig Swish-länk eller QR-kod.">
+<meta property="og:title" content="Bli stödmedlem i KBK F2017">
+<meta property="og:description" content="Stötta tjejerna i Kungsladugårds BK F2017 med en swish. Välj belopp, välj vem du hejar på, klart.">
+<meta property="og:image" content="https://8bitcat.github.io/kbk-f2017/bilder/lagposter.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://8bitcat.github.io/kbk-f2017/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="bilder/kbk.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+  /* Layout: phone-first single column. Vinröd hero-band med klubbmärke och lagfoto,
+     sedan Swish-kortet (sidans arbetsyta), spelartruppen som tröjryggar, fotostrip, sidfot. */
+  :root {
+    --maroon: #7c2938;        /* matchtröjan */
+    --maroon-deep: #4a1521;
+    --maroon-ink: #2a0d14;
+    --cuff: #a8323e;          /* ärmslutens ljusare röda */
+    --gold: #f49e0a;          /* klubbmärket */
+    --gold-deep: #c97d05;
+    --cream: #f7e2bc;         /* klubbmärket */
+    --bg: #faf6ee;
+    --surface: #ffffff;
+    --surface-2: #f3ebdd;
+    --fg: #2a1a1d;
+    --muted: #6f5a5f;
+    --line: #e4d8c6;
+    --focus: #1d6fd6;
+    --ok: #2f8f4e;
+    --font-display: "Bebas Neue", "Oswald", "Arial Narrow", Impact, sans-serif;
+    --font-body: "Barlow", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1013; --surface: #271619; --surface-2: #33201f;
+      --fg: #f4eadc; --muted: #c9b2b7; --line: #4a2f35;
+      --focus: #7fb3ff; --ok: #6cc98a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a1013; --surface: #271619; --surface-2: #33201f;
+    --fg: #f4eadc; --muted: #c9b2b7; --line: #4a2f35;
+    --focus: #7fb3ff; --ok: #6cc98a;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: .02em; line-height: .95; margin: 0; text-wrap: balance; }
+  h2 { font-size: clamp(34px, 6vw, 48px); }
+  p { margin: 0; }
+  button, input, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .wrap {
+    max-width: 1040px; margin-inline: auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .section { padding-block: 40px 8px; display: grid; gap: 16px; }
+  .section-head { display: grid; gap: 6px; }
+  .section-head p { color: var(--muted); max-width: 60ch; }
+
+  /* ---------- Hero ---------- */
+  .hero { background: var(--maroon); color: var(--cream); background-image: linear-gradient(160deg, #8a2f3f 0%, var(--maroon) 45%, var(--maroon-deep) 100%); }
+  .hero .wrap { padding-block: 22px 28px; display: grid; gap: 22px; }
+  .club { display: flex; align-items: center; gap: 12px; }
+  .club img { width: 56px; height: auto; flex: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,.25)); }
+  .club .name { font-family: var(--font-display); font-size: 24px; line-height: 1; letter-spacing: .03em; color: #fff; }
+  .club .sub { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); opacity: .85; }
+  .hero-grid { display: grid; gap: 22px; align-items: center; }
+  @media (min-width: 780px) { .hero-grid { grid-template-columns: 1fr 1.15fr; gap: 36px; } }
+  .hero h1 { font-size: clamp(56px, 11vw, 104px); color: #fff; }
+  .hero h1 em { font-style: normal; color: var(--gold); }
+  .lead { font-size: 19px; max-width: 46ch; color: var(--cream); }
+  .hero-text { display: grid; gap: 14px; min-width: 0; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 10px; width: fit-content; background: var(--gold); color: var(--maroon-ink); text-decoration: none; border-radius: 999px; padding: 10px 18px; font-weight: 700; font-size: 16px; }
+  .hero-cta:hover { background: #ffb02e; }
+  .hero-photo { margin: 0; position: relative; min-width: 0; }
+  .hero-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; border: 3px solid var(--cream); box-shadow: 0 18px 40px rgba(0,0,0,.35); }
+  .hero-photo figcaption { position: absolute; left: 12px; bottom: 12px; background: rgba(42,13,20,.78); color: var(--cream); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 6px; }
+
+  /* ---------- Swish-kortet ---------- */
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    padding: 20px; display: grid; gap: 22px; box-shadow: 0 10px 30px rgba(42,13,20,.08);
+  }
+  @media (min-width: 640px) { .card { padding: 28px; } }
+  .step { display: grid; gap: 10px; }
+  .step-label { display: flex; align-items: baseline; gap: 10px; }
+  .step-num { font-family: var(--font-display); font-size: 26px; line-height: 1; color: var(--gold-deep); min-width: 1.1em; }
+  .step-title { font-weight: 700; font-size: 18px; }
+  .step-hint { color: var(--muted); font-size: 14px; }
+
+  .amounts { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 8px; margin: 0; padding: 0; border: 0; }
+  .amounts legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .chip { position: relative; }
+  .chip input { position: absolute; inset: 0; z-index: 1; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .chip span {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+    min-height: 58px; border: 2px solid var(--line); border-radius: 12px; background: var(--surface-2);
+    font-family: var(--font-display); font-size: 26px; line-height: 1; letter-spacing: .02em;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .chip span small { font-family: var(--font-body); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+  .chip input:checked + span { background: var(--gold); border-color: var(--gold); color: var(--maroon-ink); }
+  .chip input:checked + span small { color: var(--maroon-ink); }
+  .chip input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .chip:hover span { transform: translateY(-1px); }
+
+  .field { display: grid; gap: 6px; }
+  .control {
+    width: 100%; min-height: 50px; padding: 10px 14px; border: 2px solid var(--line); border-radius: 12px;
+    background: var(--surface-2); font-size: 17px;
+  }
+  select.control { appearance: none; -webkit-appearance: none; padding-right: 44px;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 22px) 55%, calc(100% - 16px) 55%; background-size: 6px 6px; background-repeat: no-repeat; }
+  .msg-row { display: flex; gap: 8px; align-items: center; }
+  .msg-row .control { flex: 1; min-width: 0; }
+  .ghost { background: none; border: 2px solid var(--line); border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  .ghost:hover { border-color: var(--muted); color: var(--fg); }
+  .counter { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .pay { display: grid; gap: 16px; border-top: 1px solid var(--line); padding-top: 22px; }
+  @media (min-width: 720px) { .pay { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .pay-block { display: grid; gap: 10px; }
+  .pay-block h3 { font-size: 24px; }
+  .pay-block .how { color: var(--muted); font-size: 14px; }
+  .cta {
+    display: grid; justify-items: center; gap: 2px; text-decoration: none; text-align: center;
+    background: var(--maroon); color: #fff; border-radius: 14px; padding: 16px 18px;
+    border: 2px solid transparent; box-shadow: 0 8px 20px rgba(124,41,56,.35);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .cta:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(124,41,56,.42); }
+  .cta:active { transform: translateY(0); }
+  .cta .big { font-family: var(--font-display); font-size: 34px; line-height: 1; letter-spacing: .03em; }
+  .cta .small { font-size: 13px; color: var(--cream); opacity: .9; }
+  .alt-link { font-size: 14px; color: var(--muted); }
+  .alt-link a { color: var(--fg); }
+
+  .qr-panel {
+    background: #fff; color: #1b0d10; border-radius: 14px; padding: 14px; display: grid; justify-items: center; gap: 8px;
+    border: 1px solid var(--line);
+  }
+  #qr { width: 220px; height: 220px; display: grid; place-items: center; }
+  #qr img, #qr canvas { width: 220px !important; height: 220px !important; image-rendering: pixelated; }
+  .qr-number { font-family: var(--font-display); font-size: 28px; letter-spacing: .06em; line-height: 1; }
+  .qr-sum { font-size: 14px; color: #5a4a4e; text-align: center; max-width: 30ch; }
+  .copy-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .copy-btn { background: var(--surface-2); color: var(--fg); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .qr-panel .copy-btn { background: #f3ebdd; color: #2a1a1d; border-color: #e4d8c6; }
+  .copy-btn[data-done="1"] { color: var(--ok); }
+  .pay.mobile .qr-block { order: 2; } .pay.mobile .link-block { order: 1; }
+  .pay.desktop .qr-block { order: 1; } .pay.desktop .link-block { order: 2; }
+
+  /* ---------- Truppen ---------- */
+  .roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .shirt {
+    position: relative; display: grid; grid-template-rows: 6px 1fr auto; justify-items: center; align-items: center;
+    aspect-ratio: 5 / 6; border-radius: 12px; overflow: hidden; border: 2px solid transparent;
+    background: var(--maroon); color: #fff; cursor: pointer; padding: 0 6px 10px; text-align: center;
+    transition: transform .12s ease, border-color .12s ease;
+  }
+  .shirt::before { content: ""; grid-row: 1; width: 100%; height: 6px; background: var(--cuff); display: block; justify-self: stretch; }
+  .shirt .nr { font-family: var(--font-display); font-size: 46px; line-height: 1; letter-spacing: .02em; }
+  .shirt .nm { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); }
+  .shirt:hover { transform: translateY(-2px); }
+  .shirt[aria-pressed="true"] { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(244,158,10,.35); }
+  .shirt[aria-pressed="true"] .nr { color: var(--gold); }
+  .shirt.team { background: var(--maroon-deep); }
+  .shirt.team img { width: 44px; height: auto; }
+  .roster-note { color: var(--muted); font-size: 14px; }
+
+  /* ---------- Foton ---------- */
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  @media (min-width: 720px) { .gallery { grid-template-columns: repeat(3, 1fr); } .gallery .wide { grid-column: span 2; } }
+  .gallery figure { margin: 0; min-width: 0; }
+  .gallery img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); }
+  .gallery figcaption { font-size: 13px; color: var(--muted); padding-top: 6px; }
+
+  /* ---------- Info + sidfot ---------- */
+  .info { display: grid; gap: 16px; }
+  @media (min-width: 720px) { .info { grid-template-columns: 1fr 1fr; } }
+  .info-box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 8px; align-content: start; }
+  .info-box h3 { font-size: 26px; }
+  .info-box p { color: var(--muted); font-size: 15px; }
+  .share-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  footer { margin-top: 40px; background: var(--maroon-ink); color: var(--cream); }
+  footer .wrap { padding-block: 26px 30px; display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; font-size: 14px; }
+  footer img { width: 40px; height: auto; }
+  footer a { color: var(--gold); }
+  footer .muted { opacity: .75; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="club">
+      <img src="bilder/kbk.png" alt="Kungsladugårds BK:s klubbmärke" width="200" height="216">
+      <div>
+        <div class="name">Kungsladugårds BK</div>
+        <div class="sub">Flickor födda 2017 · Göteborg</div>
+      </div>
+    </div>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <h1>Bli stöd&shy;medlem <em>i KBK F2017</em></h1>
+        <p class="lead">Stötta tjejerna med en swish. Välj belopp, välj vem du hejar på, så är numret, summan och meddelandet redan ifyllda.</p>
+        <a class="hero-cta" href="#swisha">Swisha ditt stöd ↓</a>
+      </div>
+      <figure class="hero-photo">
+        <img src="bilder/laget.jpg" alt="Laget KBK F2017 sitter på en bänk på Apelsinplan i matchställ" width="1800" height="1346">
+        <figcaption>Laget våren 2026</figcaption>
+      </figure>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="section" id="swisha">
+    <div class="section-head">
+      <span class="eyebrow">Så här gör du</span>
+      <h2>Swisha ditt stöd</h2>
+      <p>Tre val, sedan en tryckning i mobilen eller en skanning från datorn. Pengarna går till lagkassan för KBK F2017.</p>
+    </div>
+
+    <div class="card">
+      <div class="step">
+        <div class="step-label"><span class="step-num">1</span><span class="step-title">Välj belopp</span></div>
+        <fieldset class="amounts" id="amounts">
+          <legend>Belopp</legend>
+          <label class="chip"><input type="radio" name="amount" value="25" id="amt-25"><span>25<small>kr</small></span></label>
+          <label class="chip"><input type="radio" name="amount" value="50" id="amt-50"><span>50<small>kr</small></span></label>
+          <label class="chip"><input type="radio" name="amount" value="100" id="amt-100" checked><span>100<small>kr</small></span></label>
+          <label class="chip"><input type="radio" name="amount" value="250" id="amt-250"><span>250<small>kr</small></span></label>
+          <label class="chip"><input type="radio" name="amount" value="500" id="amt-500"><span>500<small>kr</small></span></label>
+        </fieldset>
+      </div>
+
+      <div class="step">
+        <div class="step-label"><span class="step-num">2</span><span class="step-title">Vem hejar du på?</span><span class="step-hint">Hela laget eller en spelare</span></div>
+        <div class="field">
+          <select class="control" id="who" aria-label="Vem hejar du på?"></select>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-label"><span class="step-num">3</span><span class="step-title">Meddelande i Swish</span><span class="step-hint">Fylls i åt dig, går att ändra</span></div>
+        <div class="field">
+          <div class="msg-row">
+            <input class="control" id="msg" type="text" maxlength="50" autocomplete="off" spellcheck="false" aria-label="Meddelande i Swish">
+            <button class="ghost" type="button" id="msgReset">Återställ</button>
+          </div>
+          <span class="counter"><span id="msgLen">0</span>/50 tecken · bokstäver, siffror och utropstecken fungerar säkrast i Swish</span>
+        </div>
+      </div>
+
+      <div class="pay" id="pay">
+        <div class="pay-block link-block">
+          <h3>På mobilen</h3>
+          <a class="cta" id="payLink" href="#">
+            <span class="big" id="ctaText">Swisha 100 kr</span>
+            <span class="small">Öppnar Swish med nummer, belopp och meddelande ifyllt</span>
+          </a>
+          <p class="how">Du bekräftar som vanligt i Swish-appen. Inget dras förrän du godkänt.</p>
+          <p class="alt-link">Öppnades inte Swish? <a id="altLink" href="#">Prova den här länken i stället</a>.</p>
+        </div>
+        <div class="pay-block qr-block">
+          <h3>På datorn</h3>
+          <div class="qr-panel">
+            <div id="qr" aria-label="QR-kod för Swish-betalning"></div>
+            <div class="qr-number">073-537 83 42</div>
+            <p class="qr-sum" id="qrSum">100 kr · Heja KBK F2017!</p>
+            <div class="copy-row">
+              <button class="copy-btn" type="button" id="copyNr" data-copy="0735378342">Kopiera numret</button>
+            </div>
+          </div>
+          <p class="how">Rikta mobilkameran eller Swish-appens skanner mot koden, så öppnas betalningen färdigifylld.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="truppen">
+    <div class="section-head">
+      <span class="eyebrow">Truppen</span>
+      <h2>Tjejerna i F2017</h2>
+      <p>Tryck på en tröja för att heja på just henne. Numret följer med i meddelandet, så laget ser vem stödet gäller.</p>
+    </div>
+    <div class="roster" id="roster" role="group" aria-label="Välj spelare"></div>
+    <p class="roster-note">Två spelare heter Alice, nummer 7 och 9. Mottagaren är alltid lagets gemensamma Swish, oavsett vem du hejar på.</p>
+  </section>
+
+  <section class="section" id="foton">
+    <div class="section-head">
+      <span class="eyebrow">Från cuper och träningar</span>
+      <h2>Ett lag som har kul</h2>
+    </div>
+    <div class="gallery">
+      <figure class="wide"><img src="bilder/lagposter.jpg" alt="Lagfoto KBK F2017 med klubbmärke" loading="lazy" width="1800" height="1346"><figcaption>Lagfotot 2026</figcaption></figure>
+      <figure><img src="bilder/cup-pokal.jpg" alt="Tjejerna lyfter en pokal efter en cup" loading="lazy" width="1800" height="1350"><figcaption>Cupvinst med pokal</figcaption></figure>
+      <figure><img src="bilder/cup-medaljer.jpg" alt="Spelare med medaljer framför målet" loading="lazy" width="1800" height="1350"><figcaption>Medaljer efter cupen</figcaption></figure>
+      <figure><img src="bilder/laget-bus.jpg" alt="Hela laget gör grimaser på bänken" loading="lazy" width="1800" height="1012"><figcaption>Busbilden</figcaption></figure>
+      <figure><img src="bilder/cup-bank.jpg" alt="Laget på bänken i regnet under en cup" loading="lazy" width="1800" height="1350"><figcaption>Bänken i regnet</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section" id="info">
+    <div class="info">
+      <div class="info-box">
+        <h3>Vart går pengarna?</h3>
+        <p>Allt stöd går till lagkassan för Kungsladugårds BK F2017 och används till laget: cuper, material och gemensamma aktiviteter för tjejerna.</p>
+        <p>Mottagare i Swish: <strong>073-537 83 42</strong> (KBK F2017).</p>
+      </div>
+      <div class="info-box">
+        <h3>Tipsa fler</h3>
+        <p>Skicka sidan till mormor, grannen eller jobbet. Alla som vill kan bli stödmedlemmar, oavsett belopp.</p>
+        <div class="share-row">
+          <button class="copy-btn" type="button" id="copyUrl">Kopiera länken till sidan</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img src="bilder/kbk.png" alt="" width="200" height="216">
+    <span>Kungsladugårds BK · Apelsinplan, Västra Frölunda</span>
+    <a href="https://www.kungsladugardsbk.se/" target="_blank" rel="noopener">kungsladugardsbk.se</a>
+    <span class="muted">Stödmedlemssida för F2017. Mottagare: 073-537 83 42.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  const SWISH_NR = '0735378342';
+  const TEAM_MSG = 'Heja KBK F2017! Stodmedlem';
+  // Förnamn + tröjnummer. Lägg till eller ändra här.
+  const SPELARE = [
+    [3, 'Klara'], [5, 'Saga'], [6, 'Valencia'], [7, 'Alice'], [8, 'Nina'], [9, 'Alice'],
+    [10, 'Märta'], [11, 'Isabelle'], [12, 'Elisa'], [13, 'Natalia'], [14, 'Kajsa'], [15, 'Moa'],
+    [16, 'Isabella'], [17, 'Edessa'], [18, 'Julie'], [19, 'Ellen'], [20, 'Lily'], [23, 'Noomi'], [34, 'Julia']
+  ].sort((a, b) => a[0] - b[0]);
+
+  const $ = (id) => document.getElementById(id);
+  const who = $('who'), msg = $('msg'), roster = $('roster');
+  const state = { amount: 100, player: null };
+
+  // Svenska tecken med diakrit (å ä ö é) fungerar i Swish, men bokstäver utan är säkrast i länkar
+  // som ska tolkas av flera appar. Vi tar bort allt som inte är bokstav, siffra, mellanslag eller enkel interpunktion.
+  function sanitize(s) {
+    return s.replace(/[^A-Za-z0-9ÅÄÖåäöÉéÜü .,!?()]/g, '').replace(/\s+/g, ' ').slice(0, 50);
+  }
+  function defaultMsg() {
+    const p = state.player;
+    return p ? 'Heja ' + p.name + ' ' + p.nr + '! Stodmedlem F2017' : TEAM_MSG;
+  }
+  function appUrl(amount, message) {
+    // Samma form som Swish egna QR-lappar använder (universal link, öppnar appen med allt ifyllt).
+    return 'https://app.swish.nu/1/p/sw/?sw=' + SWISH_NR + '&amt=' + amount + '&cur=SEK&msg=' + encodeURIComponent(message) + '&src=qr';
+  }
+  function schemeUrl(amount, message) {
+    const data = { version: 1, payee: { value: SWISH_NR, editable: false }, amount: { value: amount, editable: false }, message: { value: message, editable: false } };
+    return 'swish://payment?data=' + encodeURIComponent(JSON.stringify(data));
+  }
+
+  // --- rullist
+  const optTeam = document.createElement('option');
+  optTeam.value = ''; optTeam.textContent = 'Hela laget KBK F2017';
+  who.appendChild(optTeam);
+  SPELARE.forEach(([nr, name]) => {
+    const o = document.createElement('option');
+    o.value = String(nr); o.textContent = name + ' · nr ' + nr;
+    who.appendChild(o);
+  });
+
+  // --- tröjor
+  function shirt(nr, name) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'shirt'; b.dataset.nr = nr === null ? '' : String(nr);
+    b.setAttribute('aria-pressed', 'false');
+    if (nr === null) {
+      b.classList.add('team');
+      b.innerHTML = '<span></span><img src="bilder/kbk.png" alt=""><span class="nm">Hela laget</span>';
+    } else {
+      b.innerHTML = '<span></span><span class="nr">' + nr + '</span><span class="nm">' + name + '</span>';
+    }
+    b.addEventListener('click', () => { setPlayer(b.dataset.nr); msg.value = defaultMsg(); update(); who.focus({ preventScroll: true }); });
+    return b;
+  }
+  roster.appendChild(shirt(null, ''));
+  SPELARE.forEach(([nr, name]) => roster.appendChild(shirt(nr, name)));
+
+  function setPlayer(nrStr) {
+    const nr = nrStr === '' ? null : Number(nrStr);
+    const hit = SPELARE.find(([n]) => n === nr);
+    state.player = hit ? { nr: hit[0], name: hit[1] } : null;
+    who.value = hit ? String(hit[0]) : '';
+    roster.querySelectorAll('.shirt').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.nr === (hit ? String(hit[0]) : ''))));
+  }
+
+  // --- QR
+  let qr = null;
+  function renderQr(text) {
+    if (typeof QRCode === 'undefined') { $('qr').textContent = 'QR-koden kunde inte ritas. Använd numret nedan.'; return; }
+    if (!qr) {
+      qr = new QRCode($('qr'), { text: text, width: 220, height: 220, colorDark: '#1b0d10', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    } else {
+      qr.makeCode(text);
+    }
+  }
+
+  function update() {
+    const clean = sanitize(msg.value);
+    if (clean !== msg.value) msg.value = clean;
+    const message = clean || defaultMsg();
+    $('msgLen').textContent = String(clean.length);
+    const url = appUrl(state.amount, message);
+    $('payLink').href = url;
+    $('altLink').href = schemeUrl(state.amount, message);
+    $('ctaText').textContent = 'Swisha ' + state.amount + ' kr';
+    $('qrSum').textContent = state.amount + ' kr · ' + message;
+    renderQr(url);
+  }
+
+  // --- händelser
+  $('amounts').addEventListener('change', (e) => { if (e.target.name === 'amount') { state.amount = Number(e.target.value); update(); } });
+  who.addEventListener('change', () => { setPlayer(who.value); msg.value = defaultMsg(); update(); });
+  msg.addEventListener('input', update);
+  $('msgReset').addEventListener('click', () => { msg.value = defaultMsg(); update(); msg.focus(); });
+
+  function copyText(btn, text, doneLabel) {
+    const orig = btn.dataset.orig || (btn.dataset.orig = btn.textContent);
+    const done = () => { btn.textContent = doneLabel; btn.dataset.done = '1'; setTimeout(() => { btn.textContent = orig; btn.dataset.done = ''; }, 1800); };
+    const fallback = () => {
+      const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (_) { btn.textContent = text; }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else { fallback(); }
+  }
+  $('copyNr').addEventListener('click', (e) => copyText(e.currentTarget, SWISH_NR, 'Kopierat: 073-537 83 42'));
+  $('copyUrl').addEventListener('click', (e) => copyText(e.currentTarget, location.href.split('#')[0], 'Länken är kopierad'));
+
+  // --- mobil eller dator: avgör vilken väg som visas först
+  const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (matchMedia('(pointer: coarse)').matches && matchMedia('(max-width: 900px)').matches);
+  $('pay').classList.add(mobile ? 'mobile' : 'desktop');
+
+  // --- start: 100 kr, hela laget
+  setPlayer('');
+  msg.value = defaultMsg();
+  update();
+})();
+</script>
+
+</body>
+</html>

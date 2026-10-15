@@ -170,6 +170,25 @@
   .pay.mobile .qr-block { order: 2; } .pay.mobile .link-block { order: 1; }
   .pay.desktop .qr-block { order: 1; } .pay.desktop .link-block { order: 2; }
 
+  /* ---------- Resultattavlan ---------- */
+  .board {
+    background: var(--maroon-ink); color: var(--cream); border-radius: 18px; padding: 24px 20px;
+    display: grid; gap: 24px; border: 1px solid rgba(247,226,188,.14);
+    background-image: radial-gradient(120% 90% at 0% 0%, rgba(244,158,10,.2), transparent 55%);
+  }
+  @media (min-width: 720px) { .board { grid-template-columns: 1fr 1.2fr; gap: 36px; padding: 32px; align-items: center; } }
+  .board-total { display: grid; gap: 6px; min-width: 0; }
+  .board-label { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .board-sum { font-family: var(--font-display); font-size: clamp(72px, 17vw, 128px); line-height: .9; color: #fff; letter-spacing: .02em; }
+  .board-sub { font-size: 15px; color: var(--cream); opacity: .85; }
+  .board-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; min-width: 0; }
+  .board-row { display: grid; grid-template-columns: 4.6em 1fr; align-items: center; gap: 12px; }
+  .board-amt { font-family: var(--font-display); font-size: 28px; line-height: 1; letter-spacing: .04em; color: #fff; text-align: right; }
+  .board-track { background: rgba(247,226,188,.12); border-radius: 0 4px 4px 0; height: 14px; }
+  .board-bar { height: 14px; width: var(--w); background: var(--gold); border-radius: 0 4px 4px 0; transform-origin: left; }
+  .board.is-in .board-bar { animation: grow .9s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
   /* ---------- Truppen ---------- */
   .roster { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
   .shirt {
@@ -301,6 +320,21 @@
           <p class="how">Rikta mobilkameran eller Swish-appens skanner mot koden, så öppnas betalningen färdigifylld.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="insamlat">
+    <div class="section-head">
+      <span class="eyebrow">Tack till er som redan swishat</span>
+      <h2>Insamlat hittills</h2>
+    </div>
+    <div class="board" id="board">
+      <div class="board-total">
+        <span class="board-label">Totalt i lagkassan</span>
+        <span class="board-sum"><span id="totalSum">650</span> kr</span>
+        <span class="board-sub"><span id="totalCount">3 stödmedlemmar</span> · uppdaterad <span id="totalDate">15 oktober 2026</span></span>
+      </div>
+      <ol class="board-rows" id="boardRows" aria-label="Inbetalningar som kommit in"></ol>
     </div>
   </section>
 
@@ -473,6 +507,37 @@
   }
   $('copyNr').addEventListener('click', (e) => copyText(e.currentTarget, SWISH_NR, 'Kopierat: 073-537 83 42'));
   $('copyUrl').addEventListener('click', (e) => copyText(e.currentTarget, location.href.split('#')[0], 'Länken är kopierad'));
+
+  // --- resultattavlan: inbetalningar som kommit in. Uppdatera listan och datumet för hand.
+  const INBETALNINGAR = [500, 100, 50];
+  const UPPDATERAD = '15 oktober 2026';
+  const total = INBETALNINGAR.reduce((a, b) => a + b, 0);
+  const maxAmt = Math.max.apply(null, INBETALNINGAR);
+  INBETALNINGAR.forEach((kr) => {
+    const li = document.createElement('li'); li.className = 'board-row';
+    li.innerHTML = '<span class="board-amt">' + kr.toLocaleString('sv-SE') + ' kr</span>'
+      + '<div class="board-track"><div class="board-bar" style="--w:' + Math.round(kr / maxAmt * 100) + '%"></div></div>';
+    $('boardRows').appendChild(li);
+  });
+  $('totalSum').textContent = total.toLocaleString('sv-SE');
+  $('totalCount').textContent = INBETALNINGAR.length + (INBETALNINGAR.length === 1 ? ' stödmedlem' : ' stödmedlemmar');
+  $('totalDate').textContent = UPPDATERAD;
+  // Räkna upp totalen och låt staplarna växa när tavlan rullas fram. Hoppas över vid reducerad rörelse.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      $('board').classList.add('is-in');
+      const start = performance.now(), dur = 1100;
+      const tick = (now) => {
+        const t = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - t, 3);
+        $('totalSum').textContent = Math.round(total * e).toLocaleString('sv-SE');
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.4 });
+    io.observe($('board'));
+  }
 
   // --- mobil eller dator: avgör vilken väg som visas först
   const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (matchMedia('(pointer: coarse)').matches && matchMedia('(max-width: 900px)').matches);

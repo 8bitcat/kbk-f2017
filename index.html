@@ -337,16 +337,16 @@
     <div class="board" id="board">
       <div class="board-total">
         <span class="board-label">Totalt i lagkassan</span>
-        <span class="board-sum"><span id="totalSum">650</span> kr</span>
-        <span class="board-sub"><span id="totalCount">3 stödmedlemmar</span> · uppdaterad <span id="totalDate">15 oktober 2026</span></span>
+        <span class="board-sum"><span id="totalSum">750</span> kr</span>
+        <span class="board-sub"><span id="totalCount">4 stödmedlemmar</span> · uppdaterad <span id="totalDate">15 oktober 2026</span></span>
       </div>
       <div class="board-list">
         <span class="board-label">Inbetalningar</span>
         <ol class="board-rows" id="boardRows" aria-label="Inbetalningar som kommit in"></ol>
       </div>
       <div class="board-goal">
-        <div class="meter" id="meter" role="progressbar" aria-label="Insamlat av målet" aria-valuemin="0" aria-valuemax="25000" aria-valuenow="650"><div class="meter-fill" id="meterFill" style="--w:2.6%"></div></div>
-        <div class="board-goal-text"><strong id="goalPct">2,6 %</strong> av målet <strong id="goalSum">25 000 kr</strong> · <span id="goalLeft">24 350 kr kvar</span></div>
+        <div class="meter" id="meter" role="progressbar" aria-label="Insamlat av målet" aria-valuemin="0" aria-valuemax="25000" aria-valuenow="750"><div class="meter-fill" id="meterFill" style="--w:3%"></div></div>
+        <div class="board-goal-text"><strong id="goalPct">3 %</strong> av målet <strong id="goalSum">25 000 kr</strong> · <span id="goalLeft">24 250 kr kvar</span></div>
       </div>
     </div>
   </section>
@@ -522,7 +522,7 @@
   $('copyUrl').addEventListener('click', (e) => copyText(e.currentTarget, location.href.split('#')[0], 'Länken är kopierad'));
 
   // --- resultattavlan: inbetalningar som kommit in. Uppdatera listan och datumet för hand.
-  const INBETALNINGAR = [500, 100, 50];
+  const INBETALNINGAR = [500, 100, 50, 100];
   const MAL = 25000;
   const UPPDATERAD = '15 oktober 2026';
   const sv = (n, d) => n.toLocaleString('sv-SE', { maximumFractionDigits: d || 0 });

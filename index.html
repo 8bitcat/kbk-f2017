@@ -180,6 +180,7 @@
   }
   .shirt::before { content: ""; grid-row: 1; width: 100%; height: 6px; background: var(--cuff); display: block; justify-self: stretch; }
   .shirt .nr { font-family: var(--font-display); font-size: 46px; line-height: 1; letter-spacing: .02em; }
+  .shirt .nr-name { font-size: 26px; letter-spacing: .05em; padding-top: 6px; }
   .shirt .nm { font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--cream); }
   .shirt:hover { transform: translateY(-2px); }
   .shirt[aria-pressed="true"] { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(244,158,10,.35); }
@@ -310,7 +311,7 @@
       <p>Tryck på en tröja för att heja på just henne. Numret följer med i meddelandet, så laget ser vem stödet gäller.</p>
     </div>
     <div class="roster" id="roster" role="group" aria-label="Välj spelare"></div>
-    <p class="roster-note">Två spelare heter Alice, nummer 7 och 9. Mottagaren är alltid lagets gemensamma Swish, oavsett vem du hejar på.</p>
+    <p class="roster-note">Två spelare heter Alice, nummer 7 och 9. Vera och Elvira har inget tröjnummer än. Mottagaren är alltid lagets gemensamma Swish, oavsett vem du hejar på.</p>
   </section>
 
   <section class="section" id="foton">
@@ -359,12 +360,14 @@
 (function () {
   const SWISH_NR = '0735378342';
   const TEAM_MSG = 'Heja KBK F2017! Stodmedlem';
-  // Förnamn + tröjnummer. Lägg till eller ändra här.
+  // Förnamn + tröjnummer (null = inget nummer än). Lägg till eller ändra här.
   const SPELARE = [
     [3, 'Klara'], [5, 'Saga'], [6, 'Valencia'], [7, 'Alice'], [8, 'Nina'], [9, 'Alice'],
     [10, 'Märta'], [11, 'Isabelle'], [12, 'Elisa'], [13, 'Natalia'], [14, 'Kajsa'], [15, 'Moa'],
-    [16, 'Isabella'], [17, 'Edessa'], [18, 'Julie'], [19, 'Ellen'], [20, 'Lily'], [23, 'Noomi'], [34, 'Julia']
-  ].sort((a, b) => a[0] - b[0]);
+    [16, 'Isabella'], [17, 'Edessa'], [18, 'Julie'], [19, 'Ellen'], [20, 'Lily'], [23, 'Noomi'], [34, 'Julia'],
+    [null, 'Vera'], [null, 'Elvira']
+  ].map(([nr, name]) => ({ nr: nr, name: name, id: nr === null ? name : String(nr) }))
+   .sort((a, b) => (a.nr === null) - (b.nr === null) || (a.nr || 0) - (b.nr || 0) || a.name.localeCompare(b.name, 'sv'));
 
   const $ = (id) => document.getElementById(id);
   const who = $('who'), msg = $('msg'), roster = $('roster');
@@ -377,7 +380,8 @@
   }
   function defaultMsg() {
     const p = state.player;
-    return p ? 'Heja ' + p.name + ' ' + p.nr + '! Stodmedlem F2017' : TEAM_MSG;
+    if (!p) return TEAM_MSG;
+    return 'Heja ' + p.name + (p.nr === null ? '' : ' ' + p.nr) + '! Stodmedlem F2017';
   }
   function appUrl(amount, message) {
     // Samma form som Swish egna QR-lappar använder (universal link, öppnar appen med allt ifyllt).
@@ -392,35 +396,36 @@
   const optTeam = document.createElement('option');
   optTeam.value = ''; optTeam.textContent = 'Hela laget KBK F2017';
   who.appendChild(optTeam);
-  SPELARE.forEach(([nr, name]) => {
+  SPELARE.forEach((p) => {
     const o = document.createElement('option');
-    o.value = String(nr); o.textContent = name + ' · nr ' + nr;
+    o.value = p.id; o.textContent = p.nr === null ? p.name : p.name + ' · nr ' + p.nr;
     who.appendChild(o);
   });
 
   // --- tröjor
-  function shirt(nr, name) {
+  function shirt(p) {
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'shirt'; b.dataset.nr = nr === null ? '' : String(nr);
+    b.type = 'button'; b.className = 'shirt'; b.dataset.id = p ? p.id : '';
     b.setAttribute('aria-pressed', 'false');
-    if (nr === null) {
+    if (!p) {
       b.classList.add('team');
       b.innerHTML = '<span></span><img src="bilder/kbk.png" alt=""><span class="nm">Hela laget</span>';
+    } else if (p.nr === null) {
+      b.innerHTML = '<span></span><span class="nr nr-name">' + p.name + '</span><span class="nm">F2017</span>';
     } else {
-      b.innerHTML = '<span></span><span class="nr">' + nr + '</span><span class="nm">' + name + '</span>';
+      b.innerHTML = '<span></span><span class="nr">' + p.nr + '</span><span class="nm">' + p.name + '</span>';
     }
-    b.addEventListener('click', () => { setPlayer(b.dataset.nr); msg.value = defaultMsg(); update(); who.focus({ preventScroll: true }); });
+    b.addEventListener('click', () => { setPlayer(b.dataset.id); msg.value = defaultMsg(); update(); who.focus({ preventScroll: true }); });
     return b;
   }
-  roster.appendChild(shirt(null, ''));
-  SPELARE.forEach(([nr, name]) => roster.appendChild(shirt(nr, name)));
+  roster.appendChild(shirt(null));
+  SPELARE.forEach((p) => roster.appendChild(shirt(p)));
 
-  function setPlayer(nrStr) {
-    const nr = nrStr === '' ? null : Number(nrStr);
-    const hit = SPELARE.find(([n]) => n === nr);
-    state.player = hit ? { nr: hit[0], name: hit[1] } : null;
-    who.value = hit ? String(hit[0]) : '';
-    roster.querySelectorAll('.shirt').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.nr === (hit ? String(hit[0]) : ''))));
+  function setPlayer(id) {
+    const hit = SPELARE.find((p) => p.id === id) || null;
+    state.player = hit;
+    who.value = hit ? hit.id : '';
+    roster.querySelectorAll('.shirt').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.id === (hit ? hit.id : ''))));
   }
 
   // --- QR

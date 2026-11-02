@@ -150,6 +150,7 @@
   }
   .cta:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(124,41,56,.42); }
   .cta:active { transform: translateY(0); }
+  .cta[aria-disabled="true"] { opacity: .55; pointer-events: none; box-shadow: none; }
   .cta .big { font-family: var(--font-display); font-size: 34px; line-height: 1; letter-spacing: .03em; }
   .cta .small { font-size: 13px; color: var(--cream); opacity: .9; }
   .alt-link { font-size: 14px; color: var(--muted); }
@@ -281,7 +282,12 @@
           <label class="chip"><input type="radio" name="amount" value="100" id="amt-100" checked><span>100<small>kr</small></span></label>
           <label class="chip"><input type="radio" name="amount" value="250" id="amt-250"><span>250<small>kr</small></span></label>
           <label class="chip"><input type="radio" name="amount" value="500" id="amt-500"><span>500<small>kr</small></span></label>
+          <label class="chip"><input type="radio" name="amount" value="custom" id="amt-custom"><span>Eget<small>belopp</small></span></label>
         </fieldset>
+        <div class="field" id="customRow" hidden>
+          <input class="control" id="customAmt" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="Skriv belopp i kronor" aria-label="Eget belopp i kronor">
+          <span class="counter">Hela kronor, 1 till 150 000. Knappen och QR-koden följer med medan du skriver.</span>
+        </div>
       </div>
 
       <div class="step">
@@ -419,6 +425,7 @@
   const $ = (id) => document.getElementById(id);
   const who = $('who'), msg = $('msg'), roster = $('roster');
   const state = { amount: 100, player: null };
+  const sv = (n, d) => n.toLocaleString('sv-SE', { maximumFractionDigits: d || 0 });
 
   // Svenska tecken med diakrit (å ä ö é) fungerar i Swish, men bokstäver utan är säkrast i länkar
   // som ska tolkas av flera appar. Vi tar bort allt som inte är bokstav, siffra, mellanslag eller enkel interpunktion.
@@ -491,16 +498,36 @@
     if (clean !== msg.value) msg.value = clean;
     const message = clean || defaultMsg();
     $('msgLen').textContent = String(clean.length);
-    const url = appUrl(state.amount, message);
-    $('payLink').href = url;
-    $('altLink').href = schemeUrl(state.amount, message);
-    $('ctaText').textContent = 'Swisha ' + state.amount + ' kr';
-    $('qrSum').textContent = state.amount + ' kr · ' + message;
-    renderQr(url);
+    const amount = state.amount, ok = amount !== null;
+    const link = $('payLink');
+    link.href = ok ? appUrl(amount, message) : '#';
+    link.setAttribute('aria-disabled', String(!ok));
+    $('altLink').href = ok ? schemeUrl(amount, message) : '#';
+    $('ctaText').textContent = ok ? 'Swisha ' + sv(amount) + ' kr' : 'Skriv ett belopp';
+    $('qrSum').textContent = ok ? sv(amount) + ' kr · ' + message : 'Skriv ett belopp, så ritas koden om';
+    $('qr').style.opacity = ok ? '' : '.2';
+    if (ok) renderQr(appUrl(amount, message));
   }
 
   // --- händelser
-  $('amounts').addEventListener('change', (e) => { if (e.target.name === 'amount') { state.amount = Number(e.target.value); update(); } });
+  const customAmt = $('customAmt'), customRow = $('customRow');
+  function readCustom() {
+    const v = parseInt(customAmt.value.replace(/\D/g, ''), 10);
+    return (v >= 1 && v <= 150000) ? v : null;
+  }
+  $('amounts').addEventListener('change', (e) => {
+    if (e.target.name !== 'amount') return;
+    if (e.target.value === 'custom') {
+      customRow.hidden = false; state.amount = readCustom(); update(); customAmt.focus();
+    } else {
+      customRow.hidden = true; state.amount = Number(e.target.value); update();
+    }
+  });
+  customAmt.addEventListener('input', () => {
+    const digits = customAmt.value.replace(/\D/g, '').slice(0, 6);
+    if (digits !== customAmt.value) customAmt.value = digits;
+    $('amt-custom').checked = true; state.amount = readCustom(); update();
+  });
   who.addEventListener('change', () => { setPlayer(who.value); msg.value = defaultMsg(); update(); });
   msg.addEventListener('input', update);
   $('msgReset').addEventListener('click', () => { msg.value = defaultMsg(); update(); msg.focus(); });
@@ -525,7 +552,6 @@
   const INBETALNINGAR = [500, 100, 50, 100, 100];
   const MAL = 25000;
   const UPPDATERAD = '22 oktober 2026';
-  const sv = (n, d) => n.toLocaleString('sv-SE', { maximumFractionDigits: d || 0 });
   const total = INBETALNINGAR.reduce((a, b) => a + b, 0);
   INBETALNINGAR.forEach((kr) => {
     const li = document.createElement('li'); li.className = 'board-row';
